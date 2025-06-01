@@ -109,6 +109,12 @@ export default function LoginPage() {
             else if (res.type === 'authenticate_via_verification_code_and_trust_from_my_trusters') {
                 setStep('confidant')
 
+                // первый запрос чтобы не ждать 3 сек
+                const res = await apiAuth.getVerificationCode({
+                    value: codeForm.getValues().code.trim()
+                })
+                setConfidants(res.truster_in_verification_code_s)
+
                 const intervalId = setInterval(async () => {
                     const res = await apiAuth.getVerificationCode({
                         value: codeForm.getValues().code.trim()
@@ -305,7 +311,7 @@ export default function LoginPage() {
                         <div className="w-full flex flex-col gap-y-[12px]">
                             {confidants.map(u => (
                                 <div className="flex items-center gap-x-[12px]" key={u.truster_id}>
-                                    {u.status === 'loading' && (
+                                    {u.status === 'waiting_for_confirmation' && (
                                         <ImageNext
                                             src={loading}
                                             alt='loading'
@@ -314,7 +320,7 @@ export default function LoginPage() {
                                             className="animate-spin"
                                         />
                                     )}
-                                    {u.status === 'yes' && (
+                                    {u.status === 'confirmed' && (
                                         <ImageNext
                                             src={yes}
                                             alt='yes'
@@ -322,7 +328,7 @@ export default function LoginPage() {
                                             height={24}
                                         />
                                     )}
-                                    {u.status === 'no' && (
+                                    {u.status === 'not_confirmed' && (
                                         <ImageNext
                                             src={no}
                                             alt='no'

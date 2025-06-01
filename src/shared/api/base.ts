@@ -55,7 +55,7 @@ class ApiBase {
         )
         if (error.response.data.error_code === 'CANNOT_AUTHORIZE') {
           deleteCookie('token')
-          setTimeout(() => (window.location.href = '/'), 1000)
+          setTimeout(() => (window.location.href = '/login'), 1000)
         }
         // const token = getCookie('token')
         // console.log('token', token)
