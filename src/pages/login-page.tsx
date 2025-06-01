@@ -18,6 +18,7 @@ import { InputOTP, InputOTPSlot } from "../shared/ui/input-otp";
 import { apiAuth } from "../entities/auth/api";
 import { setCookie } from "cookies-next/client";
 import { useRouter } from "next/navigation";
+import { TrusterInVerificationCodeSType } from "../entities/auth/schemas";
 
 const LoginFormSchema = z.object({
   login: z.string().min(2, {
@@ -36,6 +37,8 @@ export default function LoginPage() {
     // const [loading, setLoading] = useState(false)
     const router = useRouter()
 
+    const [confidants, setConfidants] = useState<TrusterInVerificationCodeSType[]>([])
+
     const loginForm = useForm<z.infer<typeof LoginFormSchema>>({
         resolver: zodResolver(LoginFormSchema),
         defaultValues: {
@@ -48,12 +51,12 @@ export default function LoginPage() {
             code: "",
         },
     })
-    const users = [
-        {full_name: 'Иванов Иван', status: 'loading'},
-        {full_name: 'Ильинский Илья', status: 'yes'},
-        {full_name: 'Денисов Денис', status: 'no'},
-        {full_name: 'Марьина Мария', status: 'loading'},
-    ]
+    // const users = [
+    //     {full_name: 'Иванов Иван', status: 'loading'},
+    //     {full_name: 'Ильинский Илья', status: 'yes'},
+    //     {full_name: 'Денисов Денис', status: 'no'},
+    //     {full_name: 'Марьина Мария', status: 'loading'},
+    // ]
 
     async function onSubmitLoginForm() {
         loginForm.setValue('login', loginForm.getValues().login.trim())
@@ -104,7 +107,24 @@ export default function LoginPage() {
                 }, 3000)
             }
             else if (res.type === 'authenticate_via_verification_code_and_trust_from_my_trusters') {
+                setStep('confidant')
 
+                const intervalId = setInterval(async () => {
+                    const res = await apiAuth.getVerificationCode({
+                        value: codeForm.getValues().code.trim()
+                    })
+                    setConfidants(res.truster_in_verification_code_s)
+                    if (res.are_all_truster_in_verification_code_s_status_confirmed) {
+                        clearInterval(intervalId)
+                        const res2 = await apiAuth.authenticate({
+                            verification_code_value: codeForm.getValues().code.trim()
+                        })
+                        setCookie('token', res2.value, {
+                            expires: new Date('2100-01-01'),
+                        })
+                        router.push('/profile')
+                    }
+                }, 3000)
             }
             // setStep('confidant')
         }
@@ -283,8 +303,8 @@ export default function LoginPage() {
                         <p className="w-full">Список доверенных лиц:</p>
 
                         <div className="w-full flex flex-col gap-y-[12px]">
-                            {users.map(u => (
-                                <div className="flex items-center gap-x-[12px]" key={u.full_name}>
+                            {confidants.map(u => (
+                                <div className="flex items-center gap-x-[12px]" key={u.truster_id}>
                                     {u.status === 'loading' && (
                                         <ImageNext
                                             src={loading}
@@ -310,7 +330,7 @@ export default function LoginPage() {
                                             height={24}
                                         />
                                     )}
-                                    {u.full_name}
+                                    {u.truster.fullname}
                                 </div>
                             ))}
                         </div>

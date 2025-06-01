@@ -1,6 +1,18 @@
 import { z } from 'zod'
 import { UserSchema } from '../../user/schemas'
 
+const TrusterInVerificationCodeSSchema = z.object({
+  id: z.number(),
+  long_id: z.string(),
+  slug: z.nullable(z.string()),
+  creation_dt: z.string().datetime(),
+  entity_name: z.string(),
+  status: z.string(),
+  truster_id: z.number(),
+  verification_code_id: z.number(),
+  truster: UserSchema
+})
+
 const RegisterOrAuthenticateInSchema = z.object({
   // email: z.optioz.string().trim().email(),
   verification_code_value: z.optional(z.string()),
@@ -106,7 +118,10 @@ const GetVerificationCodeOutSchema = z.object({
   status: z.string(),
   value: z.string(),
   are_all_truster_in_verification_code_s_status_confirmed: z.boolean(),
+  truster_in_verification_code_s: z.array(TrusterInVerificationCodeSSchema),
 })
+
+type TrusterInVerificationCodeSType = z.infer<typeof TrusterInVerificationCodeSSchema>
 
 type RegisterOrAuthenticateInType = z.infer<
   typeof RegisterOrAuthenticateInSchema
@@ -148,6 +163,8 @@ type GetVerificationCodeOutType = z.infer<
 >
 
 export {
+  TrusterInVerificationCodeSSchema,
+
   RegisterOrAuthenticateInSchema,
   RegisterOrAuthenticateOutSchema,
   SendRegisterOrAuthenticateVerificationCodeOnEmailInSchema,
@@ -163,6 +180,8 @@ export {
   GetVerificationCodeOutSchema,
 }
 export type {
+  TrusterInVerificationCodeSType,
+
   RegisterOrAuthenticateInType,
   RegisterOrAuthenticateOutType,
   SendRegisterOrAuthenticateVerificationCodeOnEmailInType,
