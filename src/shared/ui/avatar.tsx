@@ -50,4 +50,14 @@ function AvatarFallback({
   )
 }
 
-export { Avatar, AvatarImage, AvatarFallback }
+function fullnameAvatar(str: string | undefined) {
+    console.log(str)
+    if (!str) {
+        return ''
+    }
+
+    const arr = str!.split(' ')
+    return arr[0].charAt(0) + arr[1].charAt(0)
+}
+
+export { Avatar, AvatarImage, AvatarFallback, fullnameAvatar }

@@ -11,9 +11,27 @@ import {
   NavigationMenuLink,
 } from '@/src/shared/ui/navigation-menu'
 import { Button } from '@/src/shared/ui/button'
-import { Avatar, AvatarFallback, AvatarImage } from '@/src/shared/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage, fullnameAvatar } from '@/src/shared/ui/avatar'
+import { useEffect, useState } from 'react'
+import { UserType } from '@/src/entities/user/schemas'
+import { apiUser } from '@/src/entities/user/api'
+import { Skeleton } from '../ui/skeleton'
 
 export function Navbar() {
+  const [currentUser, setCurrentUser] = useState<UserType | undefined>()
+
+  const [loadingCurrentUser, setLoadingCurrentUser] = useState<boolean>(true)
+
+  async function getCurrentUser() {
+      setLoadingCurrentUser(true)
+      const currentUser = await apiUser.getCurrentUser()
+      setCurrentUser(currentUser)
+      setLoadingCurrentUser(false)
+  }
+
+  useEffect(() => {
+    getCurrentUser()
+  }, [])
 
   return (
     <NavigationMenu
@@ -40,10 +58,12 @@ export function Navbar() {
           </LinkNext>
         </div>
         <LinkNext href={'/profile'}>
-          <Avatar className="w-[36px] h-[36px]">
+          {!loadingCurrentUser && <Avatar className="w-[36px] h-[36px]">
               <AvatarImage src='#'/>
-              <AvatarFallback>ИИ</AvatarFallback>
-          </Avatar>
+              <AvatarFallback>{fullnameAvatar(currentUser?.fullname)}</AvatarFallback>
+              {/* <AvatarFallback>BB</AvatarFallback> */}
+          </Avatar>}
+          {loadingCurrentUser && <Skeleton className='w-[36px] h-[36px] rounded-full' />}
         </LinkNext>
       </div>
     </NavigationMenu>

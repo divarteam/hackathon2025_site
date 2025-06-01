@@ -1,6 +1,6 @@
 'use client'
 import { Navbar } from "@/src/shared/components/navbar";
-import { Avatar, AvatarFallback, AvatarImage } from "@/src/shared/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage, fullnameAvatar } from "@/src/shared/ui/avatar";
 import { Card, CardContent } from "@/src/shared/ui/card";
 import { Button } from "@/src/shared/ui/button";
 import LinkNext from "next/link";
@@ -37,7 +37,7 @@ export default function ProfilePage() {
                         <div className="flex items-center gap-x-[16px]">
                             <Avatar className="w-[56px] h-[56px]">
                                 <AvatarImage src='#'/>
-                                <AvatarFallback>ИИ</AvatarFallback>
+                                <AvatarFallback>{fullnameAvatar(currentUser?.fullname)}</AvatarFallback>
                             </Avatar>
                             <div>
                                 {/* <h2 className="text-[20px] font-bold">ИВАНОВ ИВАН ИВАНОВИЧ</h2> */}

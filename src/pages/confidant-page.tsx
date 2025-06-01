@@ -8,7 +8,8 @@ import { useEffect, useState } from "react";
 import { GetMyIncomingTrusterInVerificationCodeSOutType, UserType } from "@/src/entities/user/schemas";
 import { apiUser } from "@/src/entities/user/api";
 import { Skeleton } from "@/src/shared/ui/skeleton";
-import { ConfidantAddDialog } from "@/src/features/confidant/confidant-request-dialog";
+import { ConfidantAddDialog } from "@/src/features/confidant/confidant-add-dialog";
+import { ConfidantDeleteDialog } from "../features/confidant/confidant-delete-dialog";
 
 export default function ConfidantPage() {
     const [confidants, setConfidants] = useState<UserType[]>([])
@@ -126,15 +127,15 @@ export default function ConfidantPage() {
                 </Card>}
                 {loadingGetMyIncomingTrusterInVerificationCodeSOuts && <Skeleton className="w-full h-[50px]" />}
 
-                <div className="flex justify-between">
+                <div className="flex items-center justify-between">
                     <p className="text-[18px] font-bold">Добавление доверенного лица</p>
                     <ConfidantAddDialog cb={() => {getX(); getY();}} />
                     {/* <Button variant='ghost'>Перейти</Button> */}
                 </div>
 
-                <div className="flex justify-between">
+                <div className="flex items-center justify-between">
                     <p className="text-[18px] font-bold">Удаление доверенного лица</p>
-                    <Button variant='ghost'>Перейти</Button>
+                    <ConfidantDeleteDialog />
                 </div>
 
                 <p className="text-[18px] font-bold">История запросов на подтверждение входа</p>
