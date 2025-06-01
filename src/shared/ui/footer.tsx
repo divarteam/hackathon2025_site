@@ -10,7 +10,7 @@ import rutube from '@/src/shared/assets/images/icons/social/rutube.png'
 export function Footer() {
   return (
     <footer className='flex flex-col bg-secondary justify-center p-5 md:flex-row md:p-10 sm:px-10 px-3 gap-5 text-[16px] rounded-t-xl mt-[50px] absolute left-0 right-0'>
-      <div className='grid grid-cols-4 xl:w-[1280px] w-full px-[100px]'>
+      <div className='grid md:grid-cols-4 xs:grid-cols-2 grid-cols-1 xl:w-[1280px] w-full xl:px-[100px] px-[16px] gap-5'>
         <div className='flex flex-col gap-2 items-center'>
           <LinkNext className='opacity-50 w-full' href='#'>Личный кабинет</LinkNext>
           <LinkNext className='opacity-50 w-full' href='#'>Регистрация</LinkNext>
@@ -22,14 +22,14 @@ export function Footer() {
           <LinkNext className='opacity-50 w-full' href='#'>Партнёрам</LinkNext>
         </div>
         <div className='flex flex-col gap-2 items-center'>
-          <LinkNext className='opacity-50' href='#'>
+          <LinkNext className='opacity-50 w-full' href='#'>
             <div className='flex gap-x-[16px] items-center'>
               <MousePointer2 className='w-[24px] h-[24px] rotate-90' />
               <span>Уфа</span>
             </div>
           </LinkNext>
         </div>
-        <div className='flex gap-x-[8px] justify-center'>
+        <div className='flex gap-x-[8px] justify-start'>
           <LinkNext className='opacity-50 hover:opacity-100' href='https://t.me/gosuslugi' target='_blank'>
             <div className='w-[40px] h-[40px] bg-foreground hover:bg-[#33b3e3] rounded-[12px] flex justify-center items-center'>
               <ImageNext

@@ -17,7 +17,7 @@ export function Navbar() {
 
   return (
     <NavigationMenu
-      className={`py-2 sm:px-10 px-3 sticky top-0 flex h-[60px] max-w-[full] justify-between items-center bg-opacity-80 bg-clip-padding bg-background rounded-b-xl transition-all duration-500`}
+      className={`py-2 sm:px-10 px-3 sticky top-0 flex h-[60px] max-w-[full] justify-between items-center bg-opacity-80 bg-clip-padding bg-background rounded-b-xl transition-all duration-500 z-50`}
     >
       <div className='flex'>
         <LinkNext href='/'>

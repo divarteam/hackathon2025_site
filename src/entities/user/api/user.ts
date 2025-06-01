@@ -1,5 +1,8 @@
 import { ApiBase, apiBase } from '@/src/shared/api/base'
 import {
+  GetMyIncomingTrusterInVerificationCodeSInSchema,
+  GetMyIncomingTrusterInVerificationCodeSInType,
+  GetMyIncomingTrusterInVerificationCodeSOutType,
   // RegisterOrAuthenticateInSchema,
   // RegisterOrAuthenticateInType,
   ResetEmailInSchema,
@@ -7,6 +10,9 @@ import {
   SendResetEmailVerificationCodeOnEmailInSchema,
   SendResetEmailVerificationCodeOnEmailInType,
   SendResetEmailVerificationCodeOnEmailOutType,
+  UpdateTrusterInVerificationCodeStatusInSchema,
+  UpdateTrusterInVerificationCodeStatusInType,
+  UpdateTrusterInVerificationCodeStatusOutType,
   UserType,
 } from '../schemas'
 
@@ -25,6 +31,45 @@ class ApiUser {
       throw e
     }
   }
+
+  async getMyTrusters(): Promise<UserType[]> {
+    try {
+      const data = await apiBase.get<UserType[]>(`/client/get_my_trusters`)
+      return data
+    } catch (e) {
+      throw e
+    }
+  }
+
+  async updateMyTrustInviteCode(): Promise<UserType> {
+    try {
+      const data = await apiBase.post<UserType>(`/client/update_my_trust_invite_code`, {})
+      return data
+    } catch (e) {
+      throw e
+    }
+  }
+
+  async getMyIncomingTrusterInVerificationCodeS(getMyIncomingTrusterInVerificationCodeSIn: GetMyIncomingTrusterInVerificationCodeSInType): Promise<GetMyIncomingTrusterInVerificationCodeSOutType[]> {
+    try {
+      GetMyIncomingTrusterInVerificationCodeSInSchema.parse(getMyIncomingTrusterInVerificationCodeSIn)
+      const data = await apiBase.get<GetMyIncomingTrusterInVerificationCodeSOutType[]>(`/client/get_my_incoming_truster_in_verification_code_s`, {params: getMyIncomingTrusterInVerificationCodeSIn})
+      return data
+    } catch (e) {
+      throw e
+    }
+  }
+
+  async updateTrusterInVerificationCodeStatus(updateTrusterInVerificationCodeStatusIn: UpdateTrusterInVerificationCodeStatusInType): Promise<UpdateTrusterInVerificationCodeStatusOutType> {
+    try {
+      UpdateTrusterInVerificationCodeStatusInSchema.parse(updateTrusterInVerificationCodeStatusIn)
+      const data = await apiBase.post<UpdateTrusterInVerificationCodeStatusOutType>(`/client/update_truster_in_verification_code_status`, updateTrusterInVerificationCodeStatusIn)
+      return data
+    } catch (e) {
+      throw e
+    }
+  }
+
 
   async sendResetEmailVerificationCodeOnEmail(
     sendResetEmailVerificationCodeOnEmailIn: SendResetEmailVerificationCodeOnEmailInType,

@@ -15,6 +15,8 @@ import FormNext from 'next/form'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/src/shared/ui/form";
 import { FloatingLabelInput } from "@/src/shared/ui/floating-input";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/src/shared/ui/accordion";
+// import { GetMyIncomingTrusterInVerificationCodeSOutType } from "@/src/entities/user/schemas";
+// import { apiUser } from "@/src/entities/user/api";
 
 const ConfidantRequestDialogFormSchema = z.object({
   inviteCode: z.string().min(2, {
@@ -26,10 +28,16 @@ const ConfidantRequestDialogFormSchema = z.object({
 })
 
 // interface ConfidantRequestDialogProps {
-  
+//   getMyIncomingTrusterInVerificationCodeSOut: GetMyIncomingTrusterInVerificationCodeSOutType
+//   cb: () => void
 // }
 
-export function ConfidantRequestDialog() {
+export function ConfidantRequestDialog(
+//   {
+//   getMyIncomingTrusterInVerificationCodeSOut,
+//   cb,
+// }: ConfidantRequestDialogProps
+) {
   const confidantRequestDialogForm = useForm<z.infer<typeof ConfidantRequestDialogFormSchema>>({
       resolver: zodResolver(ConfidantRequestDialogFormSchema),
       defaultValues: {
@@ -38,8 +46,12 @@ export function ConfidantRequestDialog() {
       },
   })
 
-  function onSubmitConfidantRequestDialogForm() {
+  async function onSubmitConfidantRequestDialogForm() {
     console.log(confidantRequestDialogForm.getValues())
+    // await apiUser.updateTrusterInVerificationCodeStatus({
+    //   status,
+    //   truster_in_verification_code_id: vc_id
+    // })
   } 
 
   return (
