@@ -31,7 +31,10 @@ const GetMyIncomingTrusterInVerificationCodeSOutSchema = z.object({
   status: z.string(),
   truster_id: z.number(),
   verification_code_id: z.number(),
-  truster: UserSchema
+  truster: UserSchema,
+  verification_code: z.object({
+    user: UserSchema
+  })
 })
 const SendResetEmailVerificationCodeOnEmailInSchema = z.object({
   new_email: z.string().trim().email(),

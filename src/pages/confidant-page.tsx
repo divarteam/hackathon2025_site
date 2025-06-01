@@ -113,7 +113,7 @@ export default function ConfidantPage() {
                     <CardContent className="flex flex-col gap-y-[25px]">
                         {getMyIncomingTrusterInVerificationCodeSOuts.map(g => (
                             <div key={g.id} className="space-y-[15px]">
-                                <p className="font-bold text-[18px]">{g.truster.fullname}</p>
+                                <p className="font-bold text-[18px]">{g.verification_code.user.fullname}</p>
                                 <p>Просит вас стать его доверенным лицом.<br /> После принятия соглашения вход в его аккаунт будет доступен только после вашего подтверждения.</p>
                                 <div className="flex gap-x-[16px]">
                                     <Button onClick={() => handleRequest(g.id, 'confirmed')}>Подтвердить вход</Button>
@@ -142,8 +142,10 @@ export default function ConfidantPage() {
                     <CardContent className="space-y-[42px]">
                         {history.map(h => (
                             <div key={h.id}>
-                                <p className="text-[18px] font-bold">{h.truster.fullname}</p>
-                                <p>Вход подтверждён</p>
+                                <p className="text-[18px] font-bold">{h.verification_code.user.fullname}</p>
+                                {/* <p>Вход подтверждён</p> */}
+                                {/* {h.status} */}
+                                <p>{h.status === 'confirmed' ? 'Вход подтверждён' : 'Вход не подтверждён'}</p>
                             </div>
                         ))}
                         {/* <div>
