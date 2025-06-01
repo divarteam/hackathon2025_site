@@ -8,6 +8,7 @@ import { Footer } from "@/src/shared/ui/footer";
 import { useEffect, useState } from "react";
 import { UserType } from "../entities/user/schemas";
 import { apiUser } from "../entities/user/api";
+import { SignOut } from "../shared/ui/sign-out";
 
 export default function ProfilePage() {
     const [currentUser, setCurrentUser] = useState<UserType | undefined>()
@@ -44,6 +45,7 @@ export default function ProfilePage() {
                         <p className="font-bold">{currentUser?.phone}</p>
                     {/* <p className="font-bold">sample@mail.ru</p> */}
                     <p className="font-bold">{currentUser?.email}</p>
+                    <SignOut />
                     </CardContent>
                 </Card>
                 <p className="text-[18px] font-bold">Доверенные лица</p>
