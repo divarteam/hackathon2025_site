@@ -6,7 +6,7 @@ import loading from '@/src/shared/assets/images/icons/loading.png'
 import yes from '@/src/shared/assets/images/icons/yes.png'
 import no from '@/src/shared/assets/images/icons/no.png'
 import ImageNext from "next/image";
-import { FloatingLabelInput } from "../shared/ui/floating-input";
+import { FloatingLabelInput } from "@/src/shared/ui/floating-input";
 import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,11 +14,11 @@ import FormNext from 'next/form'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/src/shared/ui/form";
 import { Button } from "@/src/shared/ui/button";
 import { useState } from "react";
-import { InputOTP, InputOTPSlot } from "../shared/ui/input-otp";
-import { apiAuth } from "../entities/auth/api";
+import { InputOTP, InputOTPSlot } from "@/src/shared/ui/input-otp";
+import { apiAuth } from "@/src/entities/auth/api";
 import { setCookie } from "cookies-next/client";
 import { useRouter } from "next/navigation";
-import { TrusterInVerificationCodeSType } from "../entities/auth/schemas";
+import { TrusterInVerificationCodeSType } from "@/src/entities/auth/schemas";
 
 const LoginFormSchema = z.object({
   login: z.string().min(2, {

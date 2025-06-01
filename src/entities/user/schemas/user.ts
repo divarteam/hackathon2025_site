@@ -73,6 +73,22 @@ const UpdateTrusterInVerificationCodeStatusOutSchema = z.object({
   truster: UserSchema,
 })
 
+const CreateTrustingToTrusterInSchema = z.object({
+  user_trust_invite_code: z.string(),
+  trust_code_value: z.string(),
+})
+const CreateTrustingToTrusterOutSchema = z.object({
+  id: z.number(),
+  long_id: z.string(),
+  slug: z.nullable(z.string()),
+  creation_dt: z.string().datetime(),
+  entity_name: z.string(),
+  trusting_id: z.number(),
+  truster_id: z.number(),
+  trusting: UserSchema,
+  truster: UserSchema,
+})
+
 type UserType = z.infer<typeof UserSchema>
 type SendResetEmailVerificationCodeOnEmailInType = z.infer<
   typeof SendResetEmailVerificationCodeOnEmailInSchema
@@ -88,6 +104,9 @@ type GetMyIncomingTrusterInVerificationCodeSOutType = z.infer<typeof GetMyIncomi
 type UpdateTrusterInVerificationCodeStatusInType = z.infer<typeof UpdateTrusterInVerificationCodeStatusInSchema>
 type UpdateTrusterInVerificationCodeStatusOutType = z.infer<typeof UpdateTrusterInVerificationCodeStatusOutSchema>
 
+type CreateTrustingToTrusterInType = z.infer<typeof CreateTrustingToTrusterInSchema>
+type CreateTrustingToTrusterOutType = z.infer<typeof CreateTrustingToTrusterOutSchema>
+
 export {
   ResetEmailInSchema,
   SendResetEmailVerificationCodeOnEmailInSchema,
@@ -97,6 +116,8 @@ export {
   GetMyIncomingTrusterInVerificationCodeSOutSchema,
   UpdateTrusterInVerificationCodeStatusInSchema,
   UpdateTrusterInVerificationCodeStatusOutSchema,
+  CreateTrustingToTrusterInSchema,
+  CreateTrustingToTrusterOutSchema,
 }
 export type {
   ResetEmailInType,
@@ -107,4 +128,6 @@ export type {
   GetMyIncomingTrusterInVerificationCodeSOutType,
   UpdateTrusterInVerificationCodeStatusInType,
   UpdateTrusterInVerificationCodeStatusOutType,
+  CreateTrustingToTrusterInType,
+  CreateTrustingToTrusterOutType,
 }

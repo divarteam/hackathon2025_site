@@ -1,5 +1,8 @@
 import { ApiBase, apiBase } from '@/src/shared/api/base'
 import {
+  CreateTrustingToTrusterInSchema,
+  CreateTrustingToTrusterInType,
+  CreateTrustingToTrusterOutType,
   GetMyIncomingTrusterInVerificationCodeSInSchema,
   GetMyIncomingTrusterInVerificationCodeSInType,
   GetMyIncomingTrusterInVerificationCodeSOutType,
@@ -97,6 +100,16 @@ class ApiUser {
       const data = await apiBase.get<UserType>(`/client/reset_email`, {
         params: resetEmailIn,
       })
+      return data
+    } catch (e) {
+      throw e
+    }
+  }
+
+  async createTrustingToTruster(createTrustingToTrusterIn: CreateTrustingToTrusterInType): Promise<CreateTrustingToTrusterOutType> {
+    try {
+      CreateTrustingToTrusterInSchema.parse(createTrustingToTrusterIn)
+      const data = await apiBase.post<CreateTrustingToTrusterOutType>(`/client/create_trusting_to_truster`, createTrustingToTrusterIn)
       return data
     } catch (e) {
       throw e

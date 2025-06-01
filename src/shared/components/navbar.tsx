@@ -10,8 +10,8 @@ import {
   NavigationMenu,
   NavigationMenuLink,
 } from '@/src/shared/ui/navigation-menu'
-import { Button } from '../ui/button'
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
+import { Button } from '@/src/shared/ui/button'
+import { Avatar, AvatarFallback, AvatarImage } from '@/src/shared/ui/avatar'
 
 export function Navbar() {
 
@@ -31,12 +31,14 @@ export function Navbar() {
         </LinkNext>
       </div>
       <div className='flex items-center'>
-        <LinkNext href={'/confidant'}>
-            <Button className='px-[20px]' variant={'ghost'}>Управление доверенными лицами</Button>
-        </LinkNext>
-        <LinkNext href={'/profile'}>
-            <Button className='px-[24px]' variant={'ghost'}>Профиль</Button>
-        </LinkNext>
+        <div className='md:block hidden'>
+          <LinkNext href={'/confidant'}>
+              <Button className='px-[14px]' variant={'ghost'}>Управление доверенными лицами</Button>
+          </LinkNext>
+          <LinkNext href={'/profile'}>
+              <Button className='px-[24px]' variant={'ghost'}>Профиль</Button>
+          </LinkNext>
+        </div>
         <LinkNext href={'/profile'}>
           <Avatar className="w-[36px] h-[36px]">
               <AvatarImage src='#'/>

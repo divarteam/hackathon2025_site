@@ -15,6 +15,8 @@ import FormNext from 'next/form'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/src/shared/ui/form";
 import { FloatingLabelInput } from "@/src/shared/ui/floating-input";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/src/shared/ui/accordion";
+import { apiUser } from "@/src/entities/user/api";
+// import { GetMyIncomingTrusterInVerificationCodeSOutType } from "@/src/entities/user/schemas";
 // import { GetMyIncomingTrusterInVerificationCodeSOutType } from "@/src/entities/user/schemas";
 // import { apiUser } from "@/src/entities/user/api";
 
@@ -27,16 +29,16 @@ const ConfidantRequestDialogFormSchema = z.object({
   }),
 })
 
-// interface ConfidantRequestDialogProps {
-//   getMyIncomingTrusterInVerificationCodeSOut: GetMyIncomingTrusterInVerificationCodeSOutType
-//   cb: () => void
-// }
+interface ConfidantAddDialogProps {
+  // getMyIncomingTrusterInVerificationCodeSOut: GetMyIncomingTrusterInVerificationCodeSOutType
+  cb: () => void
+}
 
-export function ConfidantRequestDialog(
-//   {
-//   getMyIncomingTrusterInVerificationCodeSOut,
-//   cb,
-// }: ConfidantRequestDialogProps
+export function ConfidantAddDialog(
+  {
+  // getMyIncomingTrusterInVerificationCodeSOut,
+  cb,
+}: ConfidantAddDialogProps
 ) {
   const confidantRequestDialogForm = useForm<z.infer<typeof ConfidantRequestDialogFormSchema>>({
       resolver: zodResolver(ConfidantRequestDialogFormSchema),
@@ -48,16 +50,17 @@ export function ConfidantRequestDialog(
 
   async function onSubmitConfidantRequestDialogForm() {
     console.log(confidantRequestDialogForm.getValues())
-    // await apiUser.updateTrusterInVerificationCodeStatus({
-    //   status,
-    //   truster_in_verification_code_id: vc_id
-    // })
+    await apiUser.createTrustingToTruster({
+      user_trust_invite_code: confidantRequestDialogForm.getValues().inviteCode.trim(),
+      trust_code_value: confidantRequestDialogForm.getValues().accessCode.trim()
+    })
+    cb()
   } 
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Принять приглашение</Button>
+        <Button variant={'ghost'}>Перейти</Button>
       </DialogTrigger>
       <DialogContent className="w-[1072px] max-w-[1072px]">
         <DialogHeader>

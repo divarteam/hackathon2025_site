@@ -1,22 +1,25 @@
 'use client'
 import { Navbar } from "@/src/shared/components/navbar";
-import { Card, CardContent } from "../shared/ui/card";
-import { Button } from "../shared/ui/button";
-import { CopyButton } from "../shared/components/copy-button";
-import { Footer } from "../shared/ui/footer";
+import { Card, CardContent } from "@/src/shared/ui/card";
+import { Button } from "@/src/shared/ui/button";
+import { CopyButton } from "@/src/shared/components/copy-button";
+import { Footer } from "@/src/shared/ui/footer";
 import { useEffect, useState } from "react";
-import { GetMyIncomingTrusterInVerificationCodeSOutType, UserType } from "../entities/user/schemas";
-import { apiUser } from "../entities/user/api";
-import { Skeleton } from "../shared/ui/skeleton";
+import { GetMyIncomingTrusterInVerificationCodeSOutType, UserType } from "@/src/entities/user/schemas";
+import { apiUser } from "@/src/entities/user/api";
+import { Skeleton } from "@/src/shared/ui/skeleton";
+import { ConfidantAddDialog } from "@/src/features/confidant/confidant-request-dialog";
 
 export default function ConfidantPage() {
     const [confidants, setConfidants] = useState<UserType[]>([])
     const [currentUser, setCurrentUser] = useState<UserType | undefined>()
     const [getMyIncomingTrusterInVerificationCodeSOuts, setGetMyIncomingTrusterInVerificationCodeSOuts] = useState<GetMyIncomingTrusterInVerificationCodeSOutType[]>([])
+    const [history, setHistory] = useState<GetMyIncomingTrusterInVerificationCodeSOutType[]>([])
 
     const [loadingConfidants, setLoadingConfidants] = useState<boolean>(true)
     const [loadingCurrentUser, setLoadingCurrentUser] = useState<boolean>(true)
     const [loadingGetMyIncomingTrusterInVerificationCodeSOuts, setLoadingGetMyIncomingTrusterInVerificationCodeSOuts] = useState<boolean>(true)
+    const [loadingHistory, setLoadingHistory] = useState<boolean>(true)
 
     async function getCurrentUser() {
         setLoadingCurrentUser(true)
@@ -39,6 +42,13 @@ export default function ConfidantPage() {
         setLoadingGetMyIncomingTrusterInVerificationCodeSOuts(false)
     }
 
+    async function getY() {
+        setLoadingHistory(true)
+        const history = await apiUser.getMyIncomingTrusterInVerificationCodeS({filter_exclude_status: 'waiting_for_confirmation'})
+        setHistory(history)
+        setLoadingHistory(false)
+    }
+
     async function handleUpdateTrustCode() {
         // setLoadingCurrentUser(true)
         const currentUser = await apiUser.updateMyTrustInviteCode()
@@ -52,6 +62,7 @@ export default function ConfidantPage() {
             truster_in_verification_code_id: vc_id
         })
         getX()
+        getY()
     }
 
     useEffect(() => {
@@ -59,6 +70,7 @@ export default function ConfidantPage() {
         getTrusters()
 
         getX()
+        getY()
     }, [])
     
     return (
@@ -104,7 +116,6 @@ export default function ConfidantPage() {
                                 <p className="font-bold text-[18px]">{g.truster.fullname}</p>
                                 <p>Просит вас стать его доверенным лицом.<br /> После принятия соглашения вход в его аккаунт будет доступен только после вашего подтверждения.</p>
                                 <div className="flex gap-x-[16px]">
-                                    {/* <ConfidantRequestDialog getMyIncomingTrusterInVerificationCodeSOut={g} cb={getX} /> */}
                                     <Button onClick={() => handleRequest(g.id, 'confirmed')}>Подтвердить вход</Button>
                                     <Button variant={'outline'} onClick={() => handleRequest(g.id, 'closed')}>Отменить</Button>
                                 </div>
@@ -117,7 +128,8 @@ export default function ConfidantPage() {
 
                 <div className="flex justify-between">
                     <p className="text-[18px] font-bold">Добавление доверенного лица</p>
-                    <Button variant='ghost'>Перейти</Button>
+                    <ConfidantAddDialog cb={() => {getX(); getY();}} />
+                    {/* <Button variant='ghost'>Перейти</Button> */}
                 </div>
 
                 <div className="flex justify-between">
@@ -126,18 +138,25 @@ export default function ConfidantPage() {
                 </div>
 
                 <p className="text-[18px] font-bold">История запросов на подтверждение входа</p>
-                <Card>
+                {!loadingHistory && <Card>
                     <CardContent className="space-y-[42px]">
-                        <div>
+                        {history.map(h => (
+                            <div key={h.id}>
+                                <p className="text-[18px] font-bold">{h.truster.fullname}</p>
+                                <p>Вход подтверждён</p>
+                            </div>
+                        ))}
+                        {/* <div>
                             <p className="text-[18px] font-bold">Юрьев Юрий Юрьевич</p>
                             <p>Вход подтверждён</p>
                         </div>
                         <div>
                             <p className="text-[18px] font-bold">Иванов Иван Иванович</p>
                             <p>Вход подтверждён</p>
-                        </div>
+                        </div> */}
                     </CardContent>
-                </Card>
+                </Card>}
+                {loadingHistory && <Skeleton className="w-full h-[50px]" />}
             </div>
             <Footer />
         </div>
