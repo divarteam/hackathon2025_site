@@ -1,22 +1,24 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+// import { Geist, Geist_Mono } from "next/font/google";
 import "@/src/app/styles/globals.css";
+import { Toaster } from "@/src/shared/ui/sonner";
+import localFont from 'next/font/local'
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+// const geistSans = Geist({
+//   variable: "--font-geist-sans",
+//   subsets: ["latin"],
+// });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+// const geistMono = Geist_Mono({
+//   variable: "--font-geist-mono",
+//   subsets: ["latin"],
+// });
 
-// const raydis = localFont({
-//   src: './raydis.woff2',
-//   variable: '--font-raydis',
-//   display: 'swap',
-// })
+const lato = localFont({
+  src: './Lato-Regular.ttf',
+  variable: '--font-lato',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: "Портал государственных услуг Российской Федерации",
@@ -31,11 +33,12 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased text-[16px] flex justify-center`}
+        className={`${lato.className} antialiased text-[16px] flex justify-center`}
       >
         <div className='xl:w-[1280px] w-full'>
           {children}
         </div>
+        <Toaster />
       </body>
     </html>
   );

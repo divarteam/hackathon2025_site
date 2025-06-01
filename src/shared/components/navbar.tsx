@@ -11,12 +11,13 @@ import {
   NavigationMenuLink,
 } from '@/src/shared/ui/navigation-menu'
 import { Button } from '../ui/button'
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 
 export function Navbar() {
 
   return (
     <NavigationMenu
-      className={`py-2 sm:px-10 px-3 sm:mx-10 mx-0 sticky top-0 flex h-[60px] max-w-[full] justify-between bg-opacity-80 bg-clip-padding bg-transparent rounded-b-xl transition-all duration-500`}
+      className={`py-2 sm:px-10 px-3 sticky top-0 flex h-[60px] max-w-[full] justify-between items-center bg-opacity-80 bg-clip-padding bg-background rounded-b-xl transition-all duration-500`}
     >
       <div className='flex'>
         <LinkNext href='/'>
@@ -29,12 +30,18 @@ export function Navbar() {
           />
         </LinkNext>
       </div>
-      <div className='flex gap-x-4'>
+      <div className='flex items-center'>
         <LinkNext href={'/confidant'}>
-            <Button variant={'ghost'}>Управление доверенными лицами</Button>
+            <Button className='px-[20px]' variant={'ghost'}>Управление доверенными лицами</Button>
         </LinkNext>
         <LinkNext href={'/profile'}>
-            <Button variant={'ghost'}>Профиль</Button>
+            <Button className='px-[24px]' variant={'ghost'}>Профиль</Button>
+        </LinkNext>
+        <LinkNext href={'/profile'}>
+          <Avatar className="w-[36px] h-[36px]">
+              <AvatarImage src='#'/>
+              <AvatarFallback>ИИ</AvatarFallback>
+          </Avatar>
         </LinkNext>
       </div>
     </NavigationMenu>

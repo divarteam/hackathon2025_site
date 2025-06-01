@@ -15,6 +15,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Button } from "@/src/shared/ui/button";
 import { useState } from "react";
 import { InputOTP, InputOTPSlot } from "../shared/ui/input-otp";
+import { apiAuth } from "../entities/auth/api";
+import { setCookie } from "cookies-next/client";
+import { useRouter } from "next/navigation";
 
 const LoginFormSchema = z.object({
   login: z.string().min(2, {
@@ -29,7 +32,9 @@ const CodeFormSchema = z.object({
 })
 
 export default function LoginPage() {
-    const [step, setStep] = useState<'login' | 'code' | 'confidant'>('login')
+    const [step, setStep] = useState<'login' | 'code' | 'notify' | 'confidant'>('login')
+    // const [loading, setLoading] = useState(false)
+    const router = useRouter()
 
     const loginForm = useForm<z.infer<typeof LoginFormSchema>>({
         resolver: zodResolver(LoginFormSchema),
@@ -50,19 +55,63 @@ export default function LoginPage() {
         {full_name: 'Марьина Мария', status: 'loading'},
     ]
 
-    function onSubmitLoginForm() {
-        console.log(loginForm.getValues())
-
-        setStep('code')
+    async function onSubmitLoginForm() {
+        loginForm.setValue('login', loginForm.getValues().login.trim())
+        // console.log(loginForm.getValues())
+        const res = await apiAuth.sendVerificationCodeForAuthorization({
+            phone_or_email: loginForm.getValues().login.trim()
+        })
+        if (res) {
+            setStep('code')
+        }
     }
-    function onSubmitCodeForm() {
+    async function onSubmitCodeForm() {
+        codeForm.setValue('code', codeForm.getValues().code.trim())
         console.log(codeForm.getValues())
 
-        setStep('confidant')
+        const res = await apiAuth.confirmVerificationCodeForAuthorization({
+            verification_code_value: codeForm.getValues().code.trim()
+        })
+        console.log(res)
+        if (res) {
+            if (res.type === 'authenticate_via_verification_code') {
+                console.log('w')
+                const res2 = await apiAuth.authenticate({
+                    verification_code_value: codeForm.getValues().code.trim()
+                })
+                setCookie('token', res2.value, {
+                    expires: new Date('2100-01-01'),
+                })
+                router.push('/profile')
+            }
+            else if (res.type === 'authenticate_via_verification_code_and_trust_from_my_user_accesses') {
+                setStep('notify')
+
+                const intervalId = setInterval(async () => {
+                    const res = await apiAuth.getVerificationCode({
+                        value: codeForm.getValues().code.trim()
+                    })
+                    if (res.are_all_truster_in_verification_code_s_status_confirmed) {
+                        clearInterval(intervalId)
+                        const res2 = await apiAuth.authenticate({
+                            verification_code_value: codeForm.getValues().code.trim()
+                        })
+                        setCookie('token', res2.value, {
+                            expires: new Date('2100-01-01'),
+                        })
+                        router.push('/profile')
+                    }
+                }, 3000)
+            }
+            else if (res.type === 'authenticate_via_verification_code_and_trust_from_my_trusters') {
+
+            }
+            // setStep('confidant')
+        }
     }
     
-    return ( // mt-[14px]
-        <div className='flex flex-col justify-center items-center h-screen bg-body'>
+    return ( // mt-[14px] bg-body
+        <div className='flex flex-col justify-center items-center h-screen bg-body min-w-screen absolute left-0 right-0 overflow-x-hidden'>
 
             {step === 'login' && (
                 <div className="flex flex-col">
@@ -98,7 +147,7 @@ export default function LoginPage() {
                                             // })}
                                             {...field}
                                             id='email'
-                                            label={<FormLabel>Номер телефона</FormLabel>}
+                                            label={<FormLabel>Номер телефона / E-Mail</FormLabel>}
                                             // {...form.register('email', {
                                             // onChange: (e) => {
                                             //     const x = e.target.value
@@ -137,9 +186,8 @@ export default function LoginPage() {
                             className="py-[16px]"
                         />
                         
-                        <p className="w-full">Был отправлен код подтверждения на указанный номер телефона:</p>
-                        <p className="text-primary w-full">+7 (800) 555-35-35</p>
-                        <p className="w-full">Введите полученный код в поле ниже:</p>
+                        <p className="w-full text-center">Код подтверждения отправлен на номер <span className="font-bold w-full text-center">+7 800 *** ** 35</span></p> {/* почту */}
+                        
 
                         <Form {...codeForm}>
                             <FormNext
@@ -153,7 +201,21 @@ export default function LoginPage() {
                                     render={({ field }) => (
                                     <FormItem>
                                         <FormControl>
-                                        <InputOTP maxLength={6} {...field}>
+                                        <InputOTP
+                                            {...field}
+                                            maxLength={6}
+                                            // onChange={code => console.log(code)}
+                                            // {...codeForm.register('code', {
+                                            // onChange: (e) => {
+                                            //     const x = e.target.value
+                                            //     if (x === '') setTimeout(() => codeForm.clearErrors())
+                                            //     codeForm.setValue(
+                                            //     'code',
+                                            //     x.replace(/ /g, '').toLowerCase(),
+                                            //     )
+                                            // },
+                                            // })}
+                                        >
                                             <InputOTPSlot index={0} />
                                             <InputOTPSlot index={1} />
                                             <InputOTPSlot index={2} />
@@ -167,11 +229,40 @@ export default function LoginPage() {
                                     )}
                                 />
                                 <Button className="mt-[16px] w-full" type='submit'>
-                                    Продолжить
+                                    Отправить код
                                 </Button>
                             </FormNext>
+                            <Button variant={'ghost'} className="mt-[16px] w-full">
+                                Отправить повторно
+                            </Button>
                         </Form>
                         {/* <FloatingLabelInput label={} /> */}
+                    </Card>
+                </div>
+            )}
+
+            {step === 'notify' && (
+                <div className="flex flex-col">
+                    <Card className="w-[402px] flex flex-col items-center px-[40px] py-[32px]">
+                        <ImageNext
+                            src={logo}
+                            alt='logo'
+                            width={193}
+                            height={30}
+                            className="py-[16px]"
+                        />
+                        
+                        <p className="w-full text-center">Для входа в систему, нам необходимо удостовериться, что это именно вы.</p>
+                        <p className="w-full">Мы уже отправили уведомление для подтверждения входа на устройства, с которых вы ранее входили в аккаунт.</p>
+                        <p className="w-full">Чтобы продолжить, откройте уведомление и разрешите вход.</p>
+
+                        <ImageNext
+                            src={loading}
+                            alt='loading'
+                            width={24}
+                            height={24}
+                            className="animate-spin"
+                        />
                     </Card>
                 </div>
             )}
@@ -187,7 +278,7 @@ export default function LoginPage() {
                             className="py-[16px]"
                         />
                         
-                        <p className="w-full">Для входа в систему, нам необходимо удостовериться, что это именно вы.</p>
+                        <p className="w-full text-center">Для входа в систему, нам необходимо удостовериться, что это именно вы.</p>
                         <p className="w-full">Мы уже отправили уведомление на устройства доверенных лиц. Пожалуйста, дождитесь, пока они разрешат вход.</p>
                         <p className="w-full">Список доверенных лиц:</p>
 
