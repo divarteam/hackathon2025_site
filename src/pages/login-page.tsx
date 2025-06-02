@@ -153,7 +153,7 @@ export default function LoginPage() {
                             className="py-[16px]"
                         />
                         
-                        <p className="w-full">Введите номер телефона, прикреплённый к вашему аккаунту, в поле ниже:</p>
+                        <p className="w-full">Введите номер телефона/email, прикреплённый к вашему аккаунту, в поле ниже:</p>
 
                         <Form {...loginForm}>
                             <FormNext
@@ -215,7 +215,7 @@ export default function LoginPage() {
                             className="py-[16px]"
                         />
                         
-                        <p className="w-full text-center">Код подтверждения отправлен на номер <span className="font-bold w-full text-center">+7 800 *** ** 35</span></p> {/* почту */}
+                        <p className="w-full text-center">Код подтверждения отправлен на <span className="font-bold w-full text-center">{loginForm.getValues().login.trim()}</span></p> {/* почту */}
                         
 
                         <Form {...codeForm}>

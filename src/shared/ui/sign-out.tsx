@@ -13,6 +13,7 @@ import {
   DialogTrigger,
 } from '@/src/shared/ui/dialog'
 import { Button } from './button'
+import { apiAuth } from '@/src/entities/auth/api'
 
 export function SignOut() {
   const router = useRouter()
@@ -40,7 +41,8 @@ export function SignOut() {
             <Button
               type='button'
               variant='destructive'
-              onClick={() => {
+              onClick={async () => {
+                await apiAuth.deactivateCurrentUserToken()
                 deleteCookie('token')
                 router.push('/login')
               }}

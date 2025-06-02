@@ -33,7 +33,7 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <body
-        className={`${lato.className} antialiased text-[16px] flex justify-center`}
+        className={`${lato.className} antialiased xs:text-[16px] text-[12px] flex justify-center`}
       >
         <div className='xl:w-[1280px] w-full'>
           {children}

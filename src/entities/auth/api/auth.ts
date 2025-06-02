@@ -119,6 +119,16 @@ class ApiAuth {
       throw e
     }
   }
+
+  async deactivateCurrentUserToken(): Promise<void> {
+    try {
+      await apiBase.delete<void>(
+        `/client/deactivate_current_user_token`,
+      )
+    } catch (e) {
+      throw e
+    }
+  }
 }
 
 const apiAuth = new ApiAuth()

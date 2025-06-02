@@ -29,9 +29,9 @@ export default function ProfilePage() {
     return (
         <div>
             <Navbar />
-            <div className="pt-[74px] space-y-[25px] md:p-[40px] p-[12px]">
-                <h1 className="text-[32px] font-bold">Профиль</h1>
-                <p className="text-[18px] font-bold">Учётная запись</p>
+            <div className="pt-[24px] xs:space-y-[25px] space-y-[15px] md:p-[40px] p-[12px]">
+                <h1 className="xs:text-[32px] text-[24px] font-bold">Профиль</h1>
+                <p className="xs:text-[18px] text-[14px] font-bold">Учётная запись</p>
                 {!loadingCurrentUser && <Card>
                     <CardContent className="space-y-[40px]">
                         <div className="flex items-center gap-x-[16px]">
@@ -53,7 +53,7 @@ export default function ProfilePage() {
                     </CardContent>
                 </Card>}
                 {loadingCurrentUser && <Skeleton className="w-full h-[50px]" />}
-                <p className="text-[18px] font-bold">Доверенные лица</p>
+                <p className="xs:text-[18px] text-[14px] font-bold">Доверенные лица</p>
                 <Card>
                     <CardContent className="flex items-center justify-between gap-x-[16px]">
                         <p>Управление доверенными лицами</p>

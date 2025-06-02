@@ -77,10 +77,10 @@ export default function ConfidantPage() {
     return (
         <div>
             <Navbar />
-            <div className="pt-[74px] space-y-[25px] md:p-[40px] p-[12px]">
-                <h1 className="text-[32px] font-bold">Управление доверенными лицами</h1>
+            <div className="pt-[24px] xs:space-y-[25px] space-y-[15px] md:p-[40px] p-[12px]">
+                <h1 className="xs:text-[32px] text-[24px] font-bold">Управление доверенными лицами</h1>
 
-                <p className="text-[18px] font-bold">Пригласительный код</p>
+                <p className="xs:text-[18px] text-[14px] font-bold">Пригласительный код</p>
                 {!loadingCurrentUser && <Card>
                     <CardContent className="flex items-center justify-between gap-x-[16px]">
                         <div onClick={handleUpdateTrustCode}>
@@ -93,16 +93,16 @@ export default function ConfidantPage() {
                 {loadingCurrentUser && <Skeleton className="w-full h-[50px]" />}
                 {/* placeholder={'XXXXX_XXXXX_XXXXX'} */}
                 {/* <div className="flex justify-between">
-                    <p className="text-[18px] font-bold">Запросы на становление доверенным лицом</p>
+                    <p className="xs:text-[18px] text-[14px] font-bold">Запросы на становление доверенным лицом</p>
                     <Button variant='ghost'>Обновить</Button>
                 </div> */}
 
-                <p className="text-[18px] font-bold">Список доверенных лиц</p>
+                <p className="xs:text-[18px] text-[14px] font-bold">Список доверенных лиц</p>
                 {!loadingConfidants && <Card>
-                    <CardContent className="space-y-[42px]">
+                    <CardContent className="xs:space-y-[42px] space-y-[22px]">
                         {confidants.map(c => (
                             <p key={c.id}>
-                                {c.fullname}
+                                {c.fullname}    
                             </p>
                         ))}
                         {confidants.length === 0 && <p>Нет доверенных лиц</p>}
@@ -110,12 +110,12 @@ export default function ConfidantPage() {
                 </Card>}
                 {loadingConfidants && <Skeleton className="w-full h-[50px]" />}
                 
-                <p className="text-[18px] font-bold">Запросы на подтверждение входа</p>
+                <p className="xs:text-[18px] text-[14px] font-bold">Запросы на подтверждение входа</p>
                 {!loadingGetMyIncomingTrusterInVerificationCodeSOuts && <Card>
                     <CardContent className="flex flex-col gap-y-[25px]">
                         {getMyIncomingTrusterInVerificationCodeSOuts.map(g => (
                             <div key={g.id} className="space-y-[15px]">
-                                <p className="font-bold text-[18px]">{g.verification_code.user.fullname}</p>
+                                <p className="font-bold xs:text-[18px] text-[14px]">{g.verification_code.user.fullname}</p>
                                 <p>Просит вас стать его доверенным лицом.<br /> После принятия соглашения вход в его аккаунт будет доступен только после вашего подтверждения.</p>
                                 <div className="flex gap-x-[16px]">
                                     <Button onClick={() => handleRequest(g.id, 'confirmed')}>Подтвердить вход</Button>
@@ -129,32 +129,32 @@ export default function ConfidantPage() {
                 {loadingGetMyIncomingTrusterInVerificationCodeSOuts && <Skeleton className="w-full h-[50px]" />}
 
                 <div className="flex items-center justify-between">
-                    <p className="text-[18px] font-bold">Добавление доверенного лица</p>
+                    <p className="xs:text-[18px] text-[14px] font-bold">Добавление доверенного лица</p>
                     <ConfidantAddDialog cb={() => {getX(); getY();}} />
                 </div>
 
                 <div className="flex items-center justify-between">
-                    <p className="text-[18px] font-bold">Удаление доверенного лица</p>
+                    <p className="xs:text-[18px] text-[14px] font-bold">Удаление доверенного лица</p>
                     <ConfidantDeleteDialog />
                 </div>
 
-                <p className="text-[18px] font-bold">История запросов на подтверждение входа</p>
+                <p className="xs:text-[18px] text-[14px] font-bold">История запросов на подтверждение входа</p>
                 {!loadingHistory && <Card>
-                    <CardContent className="space-y-[42px]">
+                    <CardContent className="xs:space-y-[42px] space-y-[22px]">
                         {history.map(h => (
                             <div key={h.id}>
-                                <p className="text-[18px] font-bold">{h.verification_code.user.fullname}</p>
+                                <p className="xs:text-[18px] text-[14px] font-bold">{h.verification_code.user.fullname}</p>
                                 {/* <p>Вход подтверждён</p> */}
                                 {/* {h.status} */}
                                 <p>{h.status === 'confirmed' ? 'Вход подтверждён' : 'Вход не подтверждён'}</p>
                             </div>
                         ))}
                         {/* <div>
-                            <p className="text-[18px] font-bold">Юрьев Юрий Юрьевич</p>
+                            <p className="xs:text-[18px] text-[14px] font-bold">Юрьев Юрий Юрьевич</p>
                             <p>Вход подтверждён</p>
                         </div>
                         <div>
-                            <p className="text-[18px] font-bold">Иванов Иван Иванович</p>
+                            <p className="xs:text-[18px] text-[14px] font-bold">Иванов Иван Иванович</p>
                             <p>Вход подтверждён</p>
                         </div> */}
                     </CardContent>
