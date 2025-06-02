@@ -12,10 +12,15 @@ interface CopyButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> 
 export function CopyButton({ value, placeholder, ...props }: CopyButtonProps) {
   const [copied, setCopied] = useState(false)
 
-  function copyText() {
-    navigator.clipboard.writeText(String(value))
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+  async function copyText() {
+    // if (beforeAsyncCb) await beforeAsyncCb()
+    
+    setTimeout(() => {
+      // console.log(value)
+      navigator.clipboard.writeText(String(value))
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    }, 1000)
   }
 
   return (

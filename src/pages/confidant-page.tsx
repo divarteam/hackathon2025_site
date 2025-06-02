@@ -43,6 +43,13 @@ export default function ConfidantPage() {
         setLoadingGetMyIncomingTrusterInVerificationCodeSOuts(false)
     }
 
+    async function getXNoLoading() {
+        // setLoadingGetMyIncomingTrusterInVerificationCodeSOuts(true)
+        const getMyIncomingTrusterInVerificationCodeSOuts = await apiUser.getMyIncomingTrusterInVerificationCodeS({filter_status: 'waiting_for_confirmation'})
+        setGetMyIncomingTrusterInVerificationCodeSOuts(getMyIncomingTrusterInVerificationCodeSOuts)
+        // setLoadingGetMyIncomingTrusterInVerificationCodeSOuts(false)
+    }
+
     async function getY() {
         setLoadingHistory(true)
         const history = await apiUser.getMyIncomingTrusterInVerificationCodeS({filter_exclude_status: 'waiting_for_confirmation'})
@@ -52,8 +59,13 @@ export default function ConfidantPage() {
 
     async function handleUpdateTrustCode() {
         // setLoadingCurrentUser(true)
-        const currentUser = await apiUser.updateMyTrustInviteCode()
-        setCurrentUser(currentUser)
+        await apiUser.updateMyTrustInviteCode()
+        const cu = await apiUser.getCurrentUser()
+        setTimeout(() => {
+            console.log(cu.trust_invite_code)
+            navigator.clipboard.writeText(String(cu.trust_invite_code))
+        }, 1000)
+        setCurrentUser(cu)
         // setLoadingCurrentUser(false)
     }
 
@@ -73,6 +85,11 @@ export default function ConfidantPage() {
         getX()
         getY()
     }, [])
+
+    useEffect(() => {
+        const intervalId = setInterval(getXNoLoading, 3000)
+        return () => clearInterval(intervalId)
+    }, [])
     
     return (
         <div>
@@ -84,7 +101,9 @@ export default function ConfidantPage() {
                 {!loadingCurrentUser && <Card>
                     <CardContent className="flex items-center justify-between gap-x-[16px]">
                         <div onClick={handleUpdateTrustCode}>
-                            <CopyButton value={currentUser?.trust_invite_code || ''} placeholder={'XXXXX_XXXXX_XXXXX'} />
+                            <CopyButton value={currentUser?.trust_invite_code || ''}
+                                // placeholder={'XXXXX_XXXXX_XXXXX'}
+                            />
                         </div>
                         {/* <Button variant={'ghost'} onClick={handleUpdateTrustCode}>Обновить код</Button> */}
                         <div></div>
