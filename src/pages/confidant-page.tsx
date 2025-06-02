@@ -178,14 +178,7 @@ export default function ConfidantPage() {
                                 <p>{h.status === 'confirmed' ? 'Вход подтверждён' : 'Вход не подтверждён'}</p>
                             </div>
                         ))}
-                        {/* <div>
-                            <p className="md:text-[18px] text-[14px] font-bold">Юрьев Юрий Юрьевич</p>
-                            <p>Вход подтверждён</p>
-                        </div>
-                        <div>
-                            <p className="md:text-[18px] text-[14px] font-bold">Иванов Иван Иванович</p>
-                            <p>Вход подтверждён</p>
-                        </div> */}
+                        {history.length === 0 && <p>История пустая</p>}
                     </CardContent>
                 </Card>}
                 {loadingHistory && <Skeleton className="w-full h-[50px]" />}

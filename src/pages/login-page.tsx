@@ -67,7 +67,7 @@ export default function LoginPage() {
         loginForm.setValue('login', loginForm.getValues().login.trim())
         
         if (!validateEmail(loginForm.getValues().login.trim()) && !validatePhoneNumber(loginForm.getValues().login.trim())) {
-            toast('Введенный логин не соответствуют формату телефона/почты')
+            toast('Введенный логин не соответствуют формату телефона/почты (номер телефона начинается с 8)')
             return
         }
 
