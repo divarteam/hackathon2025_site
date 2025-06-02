@@ -21,6 +21,9 @@ import { useRouter } from "next/navigation";
 import { TrusterInVerificationCodeSType } from "@/src/entities/auth/schemas";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { ThemeToggle } from "../shared/ui/theme-toggle";
+import { AndroidDownload } from "../shared/ui/android-download";
+import { validateEmail, validatePhoneNumber } from "../shared/utils/validate";
+import { toast } from "sonner";
 
 const LoginFormSchema = z.object({
   login: z.string().min(2, {
@@ -62,7 +65,12 @@ export default function LoginPage() {
 
     async function onSubmitLoginForm() {
         loginForm.setValue('login', loginForm.getValues().login.trim())
-        // console.log(loginForm.getValues())
+        
+        if (!validateEmail(loginForm.getValues().login.trim()) && !validatePhoneNumber(loginForm.getValues().login.trim())) {
+            toast('Введенный логин не соответствуют формату телефона/почты')
+            return
+        }
+
         const res = await apiAuth.sendVerificationCodeForAuthorization({
             phone_or_email: loginForm.getValues().login.trim()
         })
@@ -146,6 +154,10 @@ export default function LoginPage() {
 
             <div className="fixed top-5 right-5">
                 <ThemeToggle />
+            </div>
+
+            <div className="fixed left-5 right-5 bottom-5">
+                <AndroidDownload />
             </div>
 
             {step === 'login' && (
