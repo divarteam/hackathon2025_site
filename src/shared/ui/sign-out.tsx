@@ -22,8 +22,10 @@ export function SignOut() {
     <Dialog>
       <DialogTrigger asChild>
         <Button variant={'destructive'}>
-          <LogOut />
-          <span>Выйти</span>
+          <div className='flex gap-x-2'>
+            <LogOut />
+            <span>Выйти</span>
+          </div>
         </Button>
       </DialogTrigger>
       <DialogContent>

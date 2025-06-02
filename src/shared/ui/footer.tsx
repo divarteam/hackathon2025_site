@@ -28,7 +28,8 @@ export function Footer() {
             </div>
           </LinkNext> */}
         </div>
-        <div className='flex gap-x-[8px] justify-start'>
+        <div className='dark:block hidden'></div>
+        <div className='gap-x-[8px] justify-start dark:hidden flex'>
           <LinkNext className='opacity-50 hover:opacity-100' href='https://t.me/gosuslugi' target='_blank'>
             <div className='w-[40px] h-[40px] bg-foreground hover:bg-[#33b3e3] rounded-[12px] flex justify-center items-center'>
               <ImageNext

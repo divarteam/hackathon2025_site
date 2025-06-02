@@ -57,6 +57,13 @@ export default function ConfidantPage() {
         setLoadingHistory(false)
     }
 
+    async function getYNoLoading() {
+        // setLoadingHistory(true)
+        const history = await apiUser.getMyIncomingTrusterInVerificationCodeS({filter_exclude_status: 'waiting_for_confirmation'})
+        setHistory(history)
+        // setLoadingHistory(false)
+    }
+
     async function handleUpdateTrustCode() {
         // setLoadingCurrentUser(true)
         await apiUser.updateMyTrustInviteCode()
@@ -87,7 +94,10 @@ export default function ConfidantPage() {
     }, [])
 
     useEffect(() => {
-        const intervalId = setInterval(getXNoLoading, 3000)
+        const intervalId = setInterval(() => {
+            getXNoLoading()
+            getYNoLoading()
+        }, 3000)
         return () => clearInterval(intervalId)
     }, [])
     
