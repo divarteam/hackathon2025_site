@@ -8,8 +8,8 @@ import rutube from '@/src/shared/assets/images/icons/social/rutube.png'
 
 export function Footer() {
   return (
-    <footer className='flex flex-col bg-secondary justify-center p-5 md:flex-row md:p-10 sm:px-10 px-3 gap-5 text-[16px] rounded-t-xl mt-[50px] absolute left-0 right-0'>
-      <div className='grid md:grid-cols-4 xs:grid-cols-2 grid-cols-1 xl:w-[1280px] w-full xl:px-[100px] px-[16px] gap-5'>
+    <footer className='transition-all duration-150 flex flex-col bg-secondary justify-center p-5 md:flex-row md:p-10 sm:px-10 px-3 gap-5 text-[16px] rounded-t-xl mt-[50px] absolute left-0 right-0'>
+      <div className='grid md:grid-cols-4 grid-cols-1 xl:w-[1280px] w-full xl:px-[100px] px-[16px] gap-5'>
         <div className='flex flex-col gap-2 items-center'>
           <LinkNext className='opacity-50 w-full' href='#'>Личный кабинет</LinkNext>
           <LinkNext className='opacity-50 w-full' href='#'>Регистрация</LinkNext>

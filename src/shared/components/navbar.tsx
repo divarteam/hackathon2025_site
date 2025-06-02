@@ -16,6 +16,7 @@ import { useEffect, useState } from 'react'
 import { UserType } from '@/src/entities/user/schemas'
 import { apiUser } from '@/src/entities/user/api'
 import { Skeleton } from '../ui/skeleton'
+import { ThemeToggle } from '../ui/theme-toggle'
 
 export function Navbar() {
   const [currentUser, setCurrentUser] = useState<UserType | undefined>()
@@ -35,7 +36,7 @@ export function Navbar() {
 
   return (
     <NavigationMenu
-      className={`py-2 sm:px-10 px-3 sticky top-0 flex h-[60px] max-w-[full] justify-between items-center bg-opacity-80 bg-clip-padding bg-background rounded-b-xl transition-all duration-500 z-50`}
+      className={`py-2 sm:px-10 px-3 sticky top-0 flex h-[60px] max-w-[full] justify-between items-center bg-opacity-80 bg-clip-padding bg-background rounded-b-xl z-50 transition-all duration-150 `}
     >
       <div className='flex'>
         <LinkNext href='/'>
@@ -56,6 +57,9 @@ export function Navbar() {
           <LinkNext href={'/profile'}>
               <Button className='px-[24px]' variant={'ghost'}>Профиль</Button>
           </LinkNext>
+        </div>
+        <div className='pr-5'>
+          <ThemeToggle />
         </div>
         <LinkNext href={'/profile'}>
           {!loadingCurrentUser && <Avatar className="w-[36px] h-[36px]">

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "@/src/app/styles/globals.css";
 import { Toaster } from "@/src/shared/ui/sonner";
 import localFont from 'next/font/local'
+import { ThemeProvider } from "next-themes";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -33,10 +34,12 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <body
-        className={`${lato.className} antialiased xs:text-[16px] text-[12px] flex justify-center`}
+        className={`${lato.className} antialiased md:text-[16px] text-[12px] flex justify-center transition-all duration-150 `}
       >
         <div className='xl:w-[1280px] w-full'>
-          {children}
+          <ThemeProvider attribute='class' defaultTheme='light'>
+            {children}
+          </ThemeProvider>
         </div>
         <Toaster />
       </body>

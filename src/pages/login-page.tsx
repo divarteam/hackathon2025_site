@@ -19,6 +19,8 @@ import { apiAuth } from "@/src/entities/auth/api";
 import { setCookie } from "cookies-next/client";
 import { useRouter } from "next/navigation";
 import { TrusterInVerificationCodeSType } from "@/src/entities/auth/schemas";
+import { REGEXP_ONLY_DIGITS } from "input-otp";
+import { ThemeToggle } from "../shared/ui/theme-toggle";
 
 const LoginFormSchema = z.object({
   login: z.string().min(2, {
@@ -142,6 +144,10 @@ export default function LoginPage() {
     return ( // mt-[14px] bg-body
         <div className='flex flex-col justify-center items-center h-screen bg-body min-w-screen absolute left-0 right-0 overflow-x-hidden'>
 
+            <div className="fixed top-5 right-5">
+                <ThemeToggle />
+            </div>
+
             {step === 'login' && (
                 <div className="flex flex-col">
                     <Card className="w-[402px] flex flex-col items-center px-[40px] py-[32px]">
@@ -233,6 +239,7 @@ export default function LoginPage() {
                                         <InputOTP
                                             {...field}
                                             maxLength={6}
+                                            pattern={REGEXP_ONLY_DIGITS}
                                             // onChange={code => console.log(code)}
                                             // {...codeForm.register('code', {
                                             // onChange: (e) => {
@@ -331,7 +338,7 @@ export default function LoginPage() {
                                             height={24}
                                         />
                                     )}
-                                    {u.status === 'not_confirmed' && (
+                                    {u.status === 'closed' && (
                                         <ImageNext
                                             src={no}
                                             alt='no'
@@ -340,6 +347,7 @@ export default function LoginPage() {
                                         />
                                     )}
                                     {u.truster.fullname}
+                                    {/* {u.status} */}
                                 </div>
                             ))}
                         </div>
