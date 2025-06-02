@@ -86,7 +86,8 @@ export default function ConfidantPage() {
                         <div onClick={handleUpdateTrustCode}>
                             <CopyButton value={currentUser?.trust_invite_code || ''} placeholder={'XXXXX_XXXXX_XXXXX'} />
                         </div>
-                        <Button variant={'ghost'} onClick={handleUpdateTrustCode}>Обновить код</Button>
+                        {/* <Button variant={'ghost'} onClick={handleUpdateTrustCode}>Обновить код</Button> */}
+                        <div></div>
                     </CardContent>
                 </Card>}
                 {loadingCurrentUser && <Skeleton className="w-full h-[50px]" />}
@@ -130,7 +131,6 @@ export default function ConfidantPage() {
                 <div className="flex items-center justify-between">
                     <p className="text-[18px] font-bold">Добавление доверенного лица</p>
                     <ConfidantAddDialog cb={() => {getX(); getY();}} />
-                    {/* <Button variant='ghost'>Перейти</Button> */}
                 </div>
 
                 <div className="flex items-center justify-between">

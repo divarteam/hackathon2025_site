@@ -1,4 +1,3 @@
-import { MousePointer2 } from 'lucide-react'
 import ImageNext from 'next/image'
 import LinkNext from 'next/link'
 
@@ -22,12 +21,12 @@ export function Footer() {
           <LinkNext className='opacity-50 w-full' href='#'>Партнёрам</LinkNext>
         </div>
         <div className='flex flex-col gap-2 items-center'>
-          <LinkNext className='opacity-50 w-full' href='#'>
+          {/* <LinkNext className='opacity-50 w-full' href='#'>
             <div className='flex gap-x-[16px] items-center'>
               <MousePointer2 className='w-[24px] h-[24px] rotate-90' />
               <span>Уфа</span>
             </div>
-          </LinkNext>
+          </LinkNext> */}
         </div>
         <div className='flex gap-x-[8px] justify-start'>
           <LinkNext className='opacity-50 hover:opacity-100' href='https://t.me/gosuslugi' target='_blank'>

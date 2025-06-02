@@ -122,13 +122,16 @@ export default function LoginPage() {
                     setConfidants(res.truster_in_verification_code_s)
                     if (res.are_all_truster_in_verification_code_s_status_confirmed) {
                         clearInterval(intervalId)
-                        const res2 = await apiAuth.authenticate({
-                            verification_code_value: codeForm.getValues().code.trim()
-                        })
-                        setCookie('token', res2.value, {
-                            expires: new Date('2100-01-01'),
-                        })
-                        router.push('/profile')
+
+                        setTimeout(async () => {
+                            const res2 = await apiAuth.authenticate({
+                                verification_code_value: codeForm.getValues().code.trim()
+                            })
+                            setCookie('token', res2.value, {
+                                expires: new Date('2100-01-01'),
+                            })
+                            router.push('/profile')
+                        }, 1000)
                     }
                 }, 3000)
             }
@@ -197,7 +200,7 @@ export default function LoginPage() {
                         </Form>
                         {/* <FloatingLabelInput label={} /> */}
                     </Card>
-                    <Button className="mt-[12px]" variant={'ghost'}>Создать новый аккаунт</Button>
+                    {/* <Button className="mt-[12px]" variant={'ghost'}>Создать новый аккаунт</Button> */}
                 </div>
             )}
 
@@ -258,8 +261,8 @@ export default function LoginPage() {
                                     Отправить код
                                 </Button>
                             </FormNext>
-                            <Button variant={'ghost'} className="mt-[16px] w-full">
-                                Отправить повторно
+                            <Button variant={'ghost'} className="mt-[16px] w-full" onClick={() => setStep('login')}>
+                                Вернуться назад
                             </Button>
                         </Form>
                         {/* <FloatingLabelInput label={} /> */}
